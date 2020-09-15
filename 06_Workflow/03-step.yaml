@@ -1,37 +1,34 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Workflow
 metadata:
-  generateName: steps-
+  generateName: 03-steps-
 spec:
-  entrypoint: hello-hello-hello
+  entrypoint: hello-split
 
-  # This spec contains two templates: hello-hello-hello and whalesay
+  # 2 템플릿: hello-split and ws
   templates:
-  - name: hello-hello-hello
-    # Instead of just running a container
-    # This template has a sequence of steps
+  - name: hello-split
     steps:
-    - - name: hello1            # hello1 is run before the following steps
-        template: whalesay
+    - - name: hello1            # 첫번째
+        template: ws
         arguments:
           parameters:
           - name: message
-            value: "hello1"
-    - - name: hello2a           # double dash => run after previous step
-        template: whalesay
+            value: "hello 1"
+    - - name: hello2a           # 두번째 중 a
+        template: ws
         arguments:
           parameters:
           - name: message
-            value: "hello2a"
-      - name: hello2b           # single dash => run in parallel with previous step
-        template: whalesay
+            value: "hello 2-a"
+      - name: hello2b           # 두번째 중 b
+        template: ws
         arguments:
           parameters:
           - name: message
-            value: "hello2b"
+            value: "hello 2-b"
 
-  # This is the same template as from the previous example
-  - name: whalesay
+  - name: ws
     inputs:
       parameters:
       - name: message
