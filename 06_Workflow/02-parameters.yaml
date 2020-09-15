@@ -1,24 +1,20 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Workflow
 metadata:
-  generateName: hello-world-parameters-
+  generateName: 02-parameters-
 spec:
-  # invoke the whalesay template with
-  # "hello world" as the argument
-  # to the message parameter
-  entrypoint: whalesay
+  entrypoint: ws
   arguments:
     parameters:
     - name: message
       value: hello world
 
-  templates:
-  - name: whalesay
+  templates:                                      # 템플릿 정의
+  - name: ws
     inputs:
       parameters:
-      - name: message       # parameter declaration
+      - name: message                             # message 라는 파라미터 선언
     container:
-      # run cowsay with that message input parameter as args
       image: docker/whalesay
       command: [cowsay]
-      args: ["{{inputs.parameters.message}}"]
+      args: ["{{inputs.parameters.message}}"]     # message 라는 파라미터에 arg 값 입력
