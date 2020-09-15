@@ -1,16 +1,16 @@
-apiVersion: argoproj.io/v1alpha1
-kind: Workflow                  # new type of k8s spec
+apiVersion: argoproj.io/v1alpha1			# api 버전
+kind: Workflow 					# k8s 스펙
 metadata:
-  generateName: hello-world-    # name of the workflow spec
+  generateName: 01-hello-world-			# 생성할 워크플로우 이름
 spec:
-  entrypoint: whalesay          # invoke the whalesay template
+  entrypoint: ws					# 플로우 스타팅 템플릿
   templates:
-  - name: whalesay              # name of the template
+  - name: ws              				# ws라고 템플릿 이름을 지정
     container:
-      image: docker/whalesay
-      command: [cowsay]
-      args: ["hello world"]
-      resources:                # limit the resources
+      image: docker/whalesay				# whalesay 라고 하는 도커 이미지 사용
+      command: [cowsay]				# ASCII 이미지 (고래)
+      args: ["hello world! hanjoo's 1st flow Job!"]	# 이미지에 표시될 문자 args
+      resources:                			# 자원 할당
         limits:
-          memory: 32Mi
-          cpu: 100m
+          memory: 8Mi
+          cpu: 50m
