@@ -20,6 +20,9 @@
 4. yaml로 services & pods 등 생성
 	kubectl apply -f {파일 이름.yml} -> 그냥 생성
 	kubectl apply -f {파일 이름.yml} - n {네임스페이스 이름} -> 특정 네임스페이스에 생성
+
+5. Argo sever (UI) 사용 for locall
+	argo server
 	
 5. Argo sever (UI) 사용을 위한 포트 포워드 for locall Argo Workflow
 	kubectl port-forward deployment/argo-server 2746:2746 -n {네임스페이스 이름}
