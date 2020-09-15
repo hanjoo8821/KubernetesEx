@@ -1,0 +1,28 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: phtoview-deployment
+
+spec:
+  replicas: 5 
+  selector:
+    matchLabels:
+      app: phtoview-deployment
+
+  template:
+    metadata:
+      labels:
+        app: phtoview-deployment
+        env: stage
+
+    spec:
+      containers:
+      - name: phtoview-deployment
+        image: hanjoo8821/photo-view:0.1
+        resources:
+          limits:
+            memory: "128Mi"
+            cpu: "500m"
+
+        ports:
+        - containerPort: 8080
