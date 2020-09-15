@@ -1,9 +1,10 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Workflow
 metadata:
-  generateName: dag-diamond-
+  generateName: 04-dag-diamond-
 spec:
   entrypoint: diamond
+  
   templates:
   - name: echo
     inputs:
@@ -12,6 +13,7 @@ spec:
     container:
       image: alpine:3.7
       command: [echo, "{{inputs.parameters.message}}"]
+  
   - name: diamond
     dag:
       tasks:
