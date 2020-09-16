@@ -14,7 +14,7 @@ def print_op(msg):
     return dsl.ContainerOp(
         name = 'Print',
         image = 'alpine:3.6',
-        command = ['echo', msg],
+        command = ['echo', msg]
     )
 @dsl.pipeline(
     name = 'Conditional execution pipeline',
@@ -29,8 +29,3 @@ def condition_pipeline():
 
 if __name__ == '__main__':
     kfp.compiler.Compiler().compile(condition_pipeline, __file__ + '.tar.gz')
-    
-    client = kfp.Client()
-    
-    my_experiment = client.create_experiment(name = 'Basic Experiment')
-    my_run = client.run_pipeline(my_experiment.id, 'Condition pipeline', __file__ + '.tar.gz')

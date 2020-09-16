@@ -15,7 +15,7 @@ spec:
         arguments:
           artifacts:
           - name: message
-            from: "{{steps.generate-artifact.outputs.artifacts.artifact}}"
+            from: "{{steps.generate-artifact.outputs.artifacts.art-hell}}"
 
   - name: ws
     container:
@@ -24,7 +24,7 @@ spec:
       args: ["cowsay hello world? hell.. | tee /tmp/hell.txt"]
     outputs:
       artifacts:
-      - name: artifact
+      - name: art-hell
         path: /tmp/hell.txt
 
   - name: print-message
