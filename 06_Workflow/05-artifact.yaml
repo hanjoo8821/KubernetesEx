@@ -15,17 +15,17 @@ spec:
         arguments:
           artifacts:
           - name: message
-            from: "{{steps.generate-artifact.outputs.artifacts.art-ex}}"
+            from: "{{steps.generate-artifact.outputs.artifacts.artifact-ex}}"
 
   - name: ws
     container:
       image: docker/whalesay:latest
       command: [sh, -c]
-      args: ["cowsay hello world? hell.. | tee /tmp/hello_world.txt"]
+      args: ["cowsay hello world? hell.. | tee /tmp/hell_inContainer.txt"]
     outputs:
       artifacts:
-      - name: art-ex
-        path: /tmp/hello_world.txt
+      - name: artifact-ex
+        path: /tmp/hell_inContainer.txt
 
   - name: print-message
     inputs:
