@@ -1,0 +1,49 @@
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  name: my-existing-volume
+spec:
+  accessModes: [ "ReadWriteOnce" ]
+  resources:
+    requests:
+      storage: 100Mi
+
+---
+apiVersion: argoproj.io/v1alpha1
+kind: Workflow
+metadata:
+  generateName: 14-2-volumes-existing-
+
+spec:
+  entrypoint: volumes-existing-example
+
+  volumes:
+  - name: workdir
+    persistentVolumeClaim:
+      claimName: my-existing-volume
+
+  templates:
+  - name: volumes-existing-example
+    steps:
+    - - name: generate
+        template: whalesay
+    - - name: print
+        template: print-message
+
+  - name: whalesay
+    container:
+      image: docker/whalesay:latest
+      command: [sh, -c]
+      args: ["echo generating message in volume; cowsay I want to sleep~~ T_T | tee /mnt/vol/my_feel.txt"]
+      volumeMounts:
+      - name: workdir
+        mountPath: /mnt/vol
+
+  - name: print-message
+    container:
+      image: alpine:latest
+      command: [sh, -c]
+      args: ["echo getting message from volume; find /mnt/vol; cat /mnt/vol/my_feel.txt"]
+      volumeMounts:
+      - name: workdir
+        mountPath: /mnt/vol

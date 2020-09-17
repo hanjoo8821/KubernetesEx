@@ -1,0 +1,41 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Workflow
+metadata:
+  generateName: 14-1-volumes-
+spec:
+  entrypoint: volumes-example
+  
+  volumeClaimTemplates:   # 볼륨 정의
+  - metadata:
+      name: workdir
+    spec:
+      accessModes: [ "ReadWriteOnce" ]
+      resources:
+        requests:
+          storage: 100Mi
+
+  templates:
+  - name: volumes-example
+    steps:
+    - - name: generate
+        template: whalesay
+    - - name: print
+        template: print-message
+
+  - name: whalesay
+    container:
+      image: docker/whalesay:latest
+      command: [sh, -c]
+      args: ["echo generating message in volume; cowsay I want to sleep~~ T_T | tee /mnt/vol/my_feel.txt"]
+      volumeMounts:
+      - name: workdir
+        mountPath: /mnt/vol
+
+  - name: print-message
+    container:
+      image: alpine:latest
+      command: [sh, -c]
+      args: ["echo getting message from volume; find /mnt/vol; cat /mnt/vol/my_feel.txt"]
+      volumeMounts:
+      - name: workdir
+        mountPath: /mnt/vol

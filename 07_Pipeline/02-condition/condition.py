@@ -10,22 +10,27 @@ def flip_coin_op():
         file_outputs = {'output': '/tmp/output'}
     )
 
-def print_op(msg):
+def print_op(message):
     return dsl.ContainerOp(
         name = 'Print',
         image = 'alpine:3.6',
-        command = ['echo', msg]
+        command = ['echo', message]
     )
+    
 @dsl.pipeline(
-    name = 'Conditional execution pipeline',
-    description = 'Shows how to use dsl.Condition().'
+    name = 'kfp-02-condition',
+    description = 'Coin Flip example : dsl.Condition().'
 )
+
 def condition_pipeline():
     flip = flip_coin_op()
-    with dsl.Condition(flip.output == 'heads'):
-        print_op('YOUT WIN')
-    with dsl.Condition(flip.output == 'tails'):
-        print_op('YOU LOSE')
+    
+    result = flip.output
+    
+    with dsl.Condition(result == 'heads'):
+        print_op('heads : YOUT WIN')
+    with dsl.Condition(result == 'tails'):
+        print_op('tails : YOU LOSE')
 
 if __name__ == '__main__':
     kfp.compiler.Compiler().compile(condition_pipeline, __file__ + '.tar.gz')

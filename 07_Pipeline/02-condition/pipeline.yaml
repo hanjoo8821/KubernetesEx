@@ -1,0 +1,54 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Workflow
+metadata:
+  generateName: kfp-02-condition-
+  annotations: {pipelines.kubeflow.org/kfp_sdk_version: 1.0.0, pipelines.kubeflow.org/pipeline_compilation_time: '2020-09-17T16:05:05.410756',
+    pipelines.kubeflow.org/pipeline_spec: '{"description": "Coin Flip example : dsl.Condition().",
+      "name": "kfp-02-condition"}'}
+  labels: {pipelines.kubeflow.org/kfp_sdk_version: 1.0.0}
+spec:
+  entrypoint: kfp-02-condition
+  templates:
+  - name: condition-1
+    dag:
+      tasks:
+      - {name: print, template: print}
+  - name: condition-2
+    dag:
+      tasks:
+      - {name: print-2, template: print-2}
+  - name: flip-coin
+    container:
+      args: ['python -c "import random; result = ''heads'' if random.randint(0,1)
+          == 0 else ''tails''; print(result)" | tee /tmp/output']
+      command: [sh, -c]
+      image: python:alpine3.6
+    outputs:
+      parameters:
+      - name: flip-coin-output
+        valueFrom: {path: /tmp/output}
+      artifacts:
+      - {name: flip-coin-output, path: /tmp/output}
+  - name: kfp-02-condition
+    dag:
+      tasks:
+      - name: condition-1
+        template: condition-1
+        when: '"{{tasks.flip-coin.outputs.parameters.flip-coin-output}}" == "heads"'
+        dependencies: [flip-coin]
+      - name: condition-2
+        template: condition-2
+        when: '"{{tasks.flip-coin.outputs.parameters.flip-coin-output}}" == "tails"'
+        dependencies: [flip-coin]
+      - {name: flip-coin, template: flip-coin}
+  - name: print
+    container:
+      command: [echo, 'heads : YOUT WIN']
+      image: alpine:3.6
+  - name: print-2
+    container:
+      command: [echo, 'tails : YOU LOSE']
+      image: alpine:3.6
+  arguments:
+    parameters: []
+  serviceAccountName: pipeline-runner
