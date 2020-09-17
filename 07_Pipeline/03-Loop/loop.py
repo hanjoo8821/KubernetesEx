@@ -22,7 +22,7 @@ def print_op(message):
     description = 'Coin Flip example : Parallel Loop'
 )
 
-def condition_pipeline():
+def loop_pipeline():
     flip = flip_coin_op()
     
     result = flip.output
@@ -31,4 +31,4 @@ def condition_pipeline():
         print_op(item)
 
 if __name__ == '__main__':
-    kfp.compiler.Compiler().compile(condition_pipeline, __file__ + '.tar.gz')
+    kfp.compiler.Compiler().compile(loop_pipeline, __file__ + '.tar.gz')

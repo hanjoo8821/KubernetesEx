@@ -22,11 +22,11 @@ def print_op(message):
     description = 'Coin Flip example : step.'
 )
 
-def condition_pipeline():
+def seq_pipeline():
     flip = flip_coin_op()
     
     result = flip.output
     print_op(result)
 
 if __name__ == '__main__':
-    kfp.compiler.Compiler().compile(condition_pipeline, __file__ + '.tar.gz')
+    kfp.compiler.Compiler().compile(seq_pipeline, __file__ + '.tar.gz')
