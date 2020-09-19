@@ -1,15 +1,15 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Workflow
 metadata:
-  generateName: 06-retry-
-  annotations: {pipelines.kubeflow.org/kfp_sdk_version: 1.0.0, pipelines.kubeflow.org/pipeline_compilation_time: '2020-09-17T19:37:29.682305',
+  generateName: kfp-06-retry-
+  annotations: {pipelines.kubeflow.org/kfp_sdk_version: 1.0.0, pipelines.kubeflow.org/pipeline_compilation_time: '2020-09-18T16:29:55.849980',
     pipelines.kubeflow.org/pipeline_spec: '{"description": "A pipeline with retry.",
-      "name": "06-Retry"}'}
+      "name": "kfp-06-Retry"}'}
   labels: {pipelines.kubeflow.org/kfp_sdk_version: 1.0.0}
 spec:
-  entrypoint: 06-retry
+  entrypoint: kfp-06-retry
   templates:
-  - name: 06-retry
+  - name: kfp-06-retry
     dag:
       tasks:
       - {name: random-failure, template: random-failure}

@@ -28,7 +28,7 @@ _job_manifest = """
 """
 
 @dsl.pipeline(
-    name = 'Kubernetes Resource',
+    name = 'kfp-07-Kubernetes Resource',
     description = 'A pipeline with resource.'
 )
 

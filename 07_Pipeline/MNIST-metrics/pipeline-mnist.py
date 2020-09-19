@@ -2,7 +2,7 @@ import kfp
 from kfp import dsl
 
 @dsl.pipeline(
-    name = 'ML pipeline - MNIST',
+    name = 'ML-02-metrics',
     description = 'Simple Machine Learning pipeline'
 )
 

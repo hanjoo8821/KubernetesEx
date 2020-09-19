@@ -10,7 +10,7 @@ def random_exit_op(exit_codes):
     )
 
 @dsl.pipeline(
-    name = '06-Retry',
+    name = 'kfp-06-Retry',
     description = 'A pipeline with retry.'
 )
 

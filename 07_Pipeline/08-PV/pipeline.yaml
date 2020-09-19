@@ -1,0 +1,78 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Workflow
+metadata:
+  generateName: kfp-08-volume-pipeline-
+  annotations: {pipelines.kubeflow.org/kfp_sdk_version: 1.0.0, pipelines.kubeflow.org/pipeline_compilation_time: '2020-09-18T16:32:13.944936',
+    pipelines.kubeflow.org/pipeline_spec: '{"description": "A pipeline with volume.",
+      "name": "kfp-08-Volume pipeline"}'}
+  labels: {pipelines.kubeflow.org/kfp_sdk_version: 1.0.0}
+spec:
+  entrypoint: kfp-08-volume-pipeline
+  templates:
+  - name: flip-coin
+    container:
+      args: ['python -c "import random; result = ''heads'' if random.randint(0,1)
+          == 0 else ''tails''; print(result)" | tee /tmp/output']
+      command: [sh, -c]
+      image: python:alpine3.6
+      volumeMounts:
+      - {mountPath: /data, name: pipeline-volume}
+    inputs:
+      parameters:
+      - {name: pipeline-volume-name}
+    volumes:
+    - name: pipeline-volume
+      persistentVolumeClaim: {claimName: '{{inputs.parameters.pipeline-volume-name}}'}
+  - name: kfp-08-volume-pipeline
+    dag:
+      tasks:
+      - name: flip-coin
+        template: flip-coin
+        dependencies: [pipeline-volume]
+        arguments:
+          parameters:
+          - {name: pipeline-volume-name, value: '{{tasks.pipeline-volume.outputs.parameters.pipeline-volume-name}}'}
+      - {name: pipeline-volume, template: pipeline-volume}
+      - name: print
+        template: print
+        dependencies: [flip-coin, pipeline-volume]
+        arguments:
+          parameters:
+          - {name: pipeline-volume-name, value: '{{tasks.pipeline-volume.outputs.parameters.pipeline-volume-name}}'}
+  - name: pipeline-volume
+    resource:
+      action: create
+      manifest: |
+        apiVersion: v1
+        kind: PersistentVolumeClaim
+        metadata:
+          name: '{{workflow.name}}-pipeline-pvc'
+        spec:
+          accessModes:
+          - ReadWriteOnce
+          resources:
+            requests:
+              storage: 100Mi
+    outputs:
+      parameters:
+      - name: pipeline-volume-manifest
+        valueFrom: {jsonPath: '{}'}
+      - name: pipeline-volume-name
+        valueFrom: {jsonPath: '{.metadata.name}'}
+      - name: pipeline-volume-size
+        valueFrom: {jsonPath: '{.status.capacity.storage}'}
+  - name: print
+    container:
+      command: [cat, /data/output]
+      image: alpine:3.6
+      volumeMounts:
+      - {mountPath: /data, name: pipeline-volume}
+    inputs:
+      parameters:
+      - {name: pipeline-volume-name}
+    volumes:
+    - name: pipeline-volume
+      persistentVolumeClaim: {claimName: '{{inputs.parameters.pipeline-volume-name}}'}
+  arguments:
+    parameters: []
+  serviceAccountName: pipeline-runner
