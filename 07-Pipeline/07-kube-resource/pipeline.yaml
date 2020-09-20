@@ -1,0 +1,44 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Workflow
+metadata:
+  generateName: kfp-07-kubernetes-resource-
+  annotations: {pipelines.kubeflow.org/kfp_sdk_version: 1.0.0, pipelines.kubeflow.org/pipeline_compilation_time: '2020-09-18T16:31:15.453673',
+    pipelines.kubeflow.org/pipeline_spec: '{"description": "A pipeline with resource.",
+      "name": "kfp-07-Kubernetes Resource"}'}
+  labels: {pipelines.kubeflow.org/kfp_sdk_version: 1.0.0}
+spec:
+  entrypoint: kfp-07-kubernetes-resource
+  templates:
+  - name: kfp-07-kubernetes-resource
+    dag:
+      tasks:
+      - {name: resource-job, template: resource-job}
+  - name: resource-job
+    resource:
+      action: create
+      manifest: |
+        apiVersion: batch/v1
+        kind: Job
+        metadata:
+          generateName: kfp
+        spec:
+          template:
+            metadata:
+              name: resource-pipeline
+            spec:
+              containers:
+              - command:
+                - python
+                - /app/ml-mnist.py
+                image: hanjoo8821/mnist-kfp:simple
+                name: hell
+              restartPolicy: Never
+    outputs:
+      parameters:
+      - name: resource-job-manifest
+        valueFrom: {jsonPath: '{}'}
+      - name: resource-job-name
+        valueFrom: {jsonPath: '{.metadata.name}'}
+  arguments:
+    parameters: []
+  serviceAccountName: pipeline-runner

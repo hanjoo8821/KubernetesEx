@@ -1,0 +1,25 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Workflow
+metadata:
+  generateName: kfp-06-retry-
+  annotations: {pipelines.kubeflow.org/kfp_sdk_version: 1.0.0, pipelines.kubeflow.org/pipeline_compilation_time: '2020-09-18T16:29:55.849980',
+    pipelines.kubeflow.org/pipeline_spec: '{"description": "A pipeline with retry.",
+      "name": "kfp-06-Retry"}'}
+  labels: {pipelines.kubeflow.org/kfp_sdk_version: 1.0.0}
+spec:
+  entrypoint: kfp-06-retry
+  templates:
+  - name: kfp-06-retry
+    dag:
+      tasks:
+      - {name: random-failure, template: random-failure}
+  - name: random-failure
+    container:
+      args: ['import random; import sys; exit_code = int(random.choice(sys.argv[1].split(",")));
+          print(exit_code); sys.exit(exit_code)', '0, 1, 2, 3']
+      command: [python, -c]
+      image: python:alpine3.6
+    retryStrategy: {limit: 10}
+  arguments:
+    parameters: []
+  serviceAccountName: pipeline-runner

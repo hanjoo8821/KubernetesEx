@@ -1,0 +1,56 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Workflow
+metadata:
+  generateName: kfp-03-loop-
+  annotations: {pipelines.kubeflow.org/kfp_sdk_version: 1.0.0, pipelines.kubeflow.org/pipeline_compilation_time: '2020-09-17T11:34:41.482118',
+    pipelines.kubeflow.org/pipeline_spec: '{"description": "Coin Flip example : Parallel
+      Loop", "name": "kfp-03-loop"}'}
+  labels: {pipelines.kubeflow.org/kfp_sdk_version: 1.0.0}
+spec:
+  entrypoint: kfp-03-loop
+  templates:
+  - name: flip-coin
+    container:
+      args: ['python -c "import json; import sys; import random; json.dump([(''heads''
+          if random.randint(0,1) == 1 else ''tails'') for i in range(10)], open(''/tmp/output.json'',
+          ''w''))"']
+      command: [sh, -c]
+      image: python:alpine3.6
+    outputs:
+      parameters:
+      - name: flip-coin-output
+        valueFrom: {path: /tmp/output.json}
+      artifacts:
+      - {name: flip-coin-output, path: /tmp/output.json}
+  - name: for-loop-for-loop-42283912-1
+    inputs:
+      parameters:
+      - {name: flip-coin-output-loop-item}
+    dag:
+      tasks:
+      - name: print
+        template: print
+        arguments:
+          parameters:
+          - {name: flip-coin-output-loop-item, value: '{{inputs.parameters.flip-coin-output-loop-item}}'}
+  - name: kfp-03-loop
+    dag:
+      tasks:
+      - {name: flip-coin, template: flip-coin}
+      - name: for-loop-for-loop-42283912-1
+        template: for-loop-for-loop-42283912-1
+        dependencies: [flip-coin]
+        arguments:
+          parameters:
+          - {name: flip-coin-output-loop-item, value: '{{item}}'}
+        withParam: '{{tasks.flip-coin.outputs.parameters.flip-coin-output}}'
+  - name: print
+    container:
+      command: [echo, '{{inputs.parameters.flip-coin-output-loop-item}}']
+      image: alpine:3.6
+    inputs:
+      parameters:
+      - {name: flip-coin-output-loop-item}
+  arguments:
+    parameters: []
+  serviceAccountName: pipeline-runner

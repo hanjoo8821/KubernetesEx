@@ -1,0 +1,42 @@
+apiVersion: argoproj.io/v1alpha1
+
+kind: Workflow
+
+metadata:
+  generateName: 03-steps-
+
+spec:
+  entrypoint: hello-split
+
+  # 2 템플릿: hello-split and ws
+  templates:
+  - name: hello-split
+    steps:
+    - - name: hello1            # 첫번째
+        template: ws
+        arguments:
+          parameters:
+          - name: message
+            value: "Goodbye"
+
+    - - name: hello2a           # 두번째 중 a
+        template: ws
+        arguments:
+          parameters:
+          - name: message
+            value: "POSTECH"
+      - name: hello2b           # 두번째 중 b
+        template: ws
+        arguments:
+          parameters:
+          - name: message
+            value: "TMAX"
+
+  - name: ws
+    inputs:
+      parameters:
+      - name: message
+    container:
+      image: docker/whalesay
+      command: [cowsay]
+      args: ["{{inputs.parameters.message}}"]

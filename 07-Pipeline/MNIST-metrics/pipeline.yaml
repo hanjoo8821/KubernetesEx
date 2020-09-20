@@ -1,0 +1,23 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Workflow
+metadata:
+  generateName: ml-02-metrics-
+  annotations: {pipelines.kubeflow.org/kfp_sdk_version: 1.0.0, pipelines.kubeflow.org/pipeline_compilation_time: '2020-09-18T16:35:15.301427',
+    pipelines.kubeflow.org/pipeline_spec: '{"description": "Simple Machine Learning
+      pipeline", "name": "ML-02-metrics"}'}
+  labels: {pipelines.kubeflow.org/kfp_sdk_version: 1.0.0}
+spec:
+  entrypoint: ml-02-metrics
+  templates:
+  - name: ml-02-metrics
+    dag:
+      tasks:
+      - {name: mnist-kfp, template: mnist-kfp}
+  - name: mnist-kfp
+    container: {image: 'hanjoo8821/mnist-kfp:metrics'}
+    outputs:
+      artifacts:
+      - {name: mlpipeline-metrics, path: /mlpipeline-metrics.json}
+  arguments:
+    parameters: []
+  serviceAccountName: pipeline-runner
