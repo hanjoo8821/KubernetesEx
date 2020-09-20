@@ -14,6 +14,7 @@
 * $ kubectl get pod -n was-flask
 * $ kubectl get deployment -n was-flask
 * $ kubectl get replicasets -n was-flask
-* $ kubectl get svc -n ws-was-flask
+* $ kubectl get svc -n was-flask
+* (전부 확인: $ kubectl get all -n was-flask)
 ## 5. 서비스 배포 (minikube)
-* $ minikube service ws-svc -n was-flask
+* $ minikube service was-svc -n was-flask
