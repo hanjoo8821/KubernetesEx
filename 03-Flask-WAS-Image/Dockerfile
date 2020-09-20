@@ -1,5 +1,5 @@
 # Base Image
-FROM python:3.6
+FROM python:latest
 
 # Maintainer
 LABEL maintainer "Shiho ASA"

@@ -1,0 +1,38 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: was-dep
+spec:
+  replicas: 2 
+  selector:
+    matchLabels:
+      app: phtoview
+  template:
+    metadata:
+      labels:
+        app: phtoview
+        env: stage
+    spec:
+      containers:
+      - name: was-con
+        image: hanjoo8821/was-flask:ex
+        resources:
+          limits:
+            memory: "128Mi"
+            cpu: "500m"
+        ports:
+        - containerPort: 8080
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: was-svc
+spec:
+  type: LoadBalancer
+  selector:
+    app: phtoview
+  ports:
+  - port: 8080
+    targetPort: 8080
+    protocol: TCP
