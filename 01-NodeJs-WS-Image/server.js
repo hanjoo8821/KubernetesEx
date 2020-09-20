@@ -3,7 +3,7 @@ var http = require('http');
 
 var handleRequest = function(request, response) {
   response.writeHead(200);
-  response.end("시험삼아 해보는 웹페이지. 호스트는?  " + os.hostname());
+  response.end("It's a test version Web Server (by NodeJs). Hostname?  " + os.hostname());
   
   console.log("[" + Date(Date.now()).toLocaleString() + "] " + os.hostname());
 }
