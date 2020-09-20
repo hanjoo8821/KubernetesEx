@@ -1,7 +1,0 @@
-FROM tensorflow/tensorflow:2.1.0-py3
-
-RUN mkdir -p /app
-ADD ml-mnist.py /app/
-WORKDIR /app
-
-CMD ["python", "/app/ml-mnist.py"]
