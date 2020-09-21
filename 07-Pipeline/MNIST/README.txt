@@ -1,8 +1,0 @@
-1. ml-mnist.py 파일 생성 (머신러닝 프로그램 작성)
-2. Dockerfile 작성 (만들어낸 머신러닝 프로그램 돌리는 환경에 대한 manifest)
-3. 도커 컨테이너 이미지 빌드 (Dockerfile의 설정으로 이미지 빌드: docker build -t hanjoo8821/mnist-kfp:metrics .)
-4. 도커 허브에 푸쉬 (docker push hanjoo8821/mnist-kfp:metrics)
-5. pipeline-mnist.py 파일 생성 (파이프라인 코드 작성)
-6. pipeline-mnist.py 실행 -> pipeline-mnist.py.tar.gz 파일 생성 (python pipeline-mnist.py)
-7. pipeline-mnist.py.tar.gz 압축 풀기 -> pipeline.yaml 파일 생성 (tar -xvf pipeline-mnist.py.tar.gz)
-8. Argo 엔진으로 워크플로우 생성 (argo submit pipeline.yaml -n argo)

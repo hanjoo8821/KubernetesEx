@@ -9,7 +9,7 @@ from kfp import dsl
 def ml_pipeline():
     dsl.ContainerOp(
         name = 'mnist-kfp',
-        image = 'hanjoo8821/mnist-kfp:simple'
+        image = 'hanjoo8821/mnist:basic'
     )
 
 if __name__ == '__main__':

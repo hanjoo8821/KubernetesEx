@@ -1,0 +1,53 @@
+# apiVersion: v1
+# kind: Pod
+# metadata:
+#   name: test-pod
+# spec:
+#   containers:
+#   - name: test-con
+#     image: python:latest
+#     resources:
+#       requests:
+#         memory: "64Mi"
+#         cpu: "250m"
+#       limits:
+#         memory: "128Mi"
+#         cpu: "500m"
+#     command: [sh, -c]
+#     args: ['python -c "print(''My name is J. H. Han.'')"']
+    
+apiVersion: v1
+kind: ReplicationController
+metadata:
+  name: python-rc
+spec:
+  replicas: 2
+  selector:
+    app: name_print
+  template:
+    metadata:
+      name: pod-test
+      labels:
+        app: name_print
+    spec:
+      containers:
+      - name: con-test
+        image: python:latest
+        command: [sh, -c]
+        args: ['python -c "print(''My name is J. H. Han.'')"']
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 8080
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: python-svc
+spec:
+  type: LoadBalancer
+  ports:
+  - port: 8080
+    targetPort: 8080
+  selector:
+    app: name_print

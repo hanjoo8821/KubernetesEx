@@ -1,4 +1,4 @@
-FROM tensorflow/tensorflow:2.1.0-py3
+FROM tensorflow/tensorflow:latest
 
 RUN mkdir -p /app
 ADD ml-mnist.py /app/

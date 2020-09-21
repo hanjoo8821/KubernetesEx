@@ -2,14 +2,14 @@ import kfp
 from kfp import dsl
 
 @dsl.pipeline(
-    name = 'ML-02-metrics',
-    description = 'Simple Machine Learning pipeline'
+    name = 'ML-02-artifact',
+    description = 'Simple Machine Learning pipeline with artifacts'
 )
 
 def ml_pipeline():
     dsl.ContainerOp(
         name = 'mnist-kfp',
-        image = 'hanjoo8821/mnist-kfp:metrics',
+        image = 'hanjoo8821/mnist:artifact',
         output_artifact_paths={'mlpipeline-metrics': '/mlpipeline-metrics.json'}
     )
 
