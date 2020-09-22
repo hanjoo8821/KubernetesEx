@@ -2,7 +2,7 @@ apiVersion: argoproj.io/v1alpha1
 kind: Workflow
 metadata:
   generateName: kfp-07-kubernetes-resource-
-  annotations: {pipelines.kubeflow.org/kfp_sdk_version: 1.0.0, pipelines.kubeflow.org/pipeline_compilation_time: '2020-09-18T16:31:15.453673',
+  annotations: {pipelines.kubeflow.org/kfp_sdk_version: 1.0.0, pipelines.kubeflow.org/pipeline_compilation_time: '2020-09-22T15:02:25.994589',
     pipelines.kubeflow.org/pipeline_spec: '{"description": "A pipeline with resource.",
       "name": "kfp-07-Kubernetes Resource"}'}
   labels: {pipelines.kubeflow.org/kfp_sdk_version: 1.0.0}
@@ -20,18 +20,15 @@ spec:
         apiVersion: batch/v1
         kind: Job
         metadata:
-          generateName: kfp
+          generateName: dsl-rsources
         spec:
           template:
             metadata:
-              name: resource-pipeline
+              name: resource-ex
             spec:
               containers:
-              - command:
-                - python
-                - /app/ml-mnist.py
-                image: hanjoo8821/mnist-kfp:simple
-                name: hell
+              - image: hanjoo8821/mnist:basic
+                name: mnist
               restartPolicy: Never
     outputs:
       parameters:

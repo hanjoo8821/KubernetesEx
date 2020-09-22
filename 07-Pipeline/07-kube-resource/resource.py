@@ -7,18 +7,17 @@ _job_manifest = """
     "apiVersion": "batch/v1",
     "kind": "Job",
     "metadata": {
-        "generateName": "kfp"
+        "generateName": "dsl-rsources"
     },
     "spec": {
         "template": {
             "metadata": {
-                "name": "resource-pipeline"
+                "name": "resource-ex"
             },
             "spec": {
                 "containers": [{
-                    "name": "hell",
-                    "image": "hanjoo8821/mnist-kfp:simple",
-                    "command": ["python", "/app/ml-mnist.py"]
+                    "name": "mnist",
+                    "image": "hanjoo8821/mnist:basic"
                 }],
                 "restartPolicy": "Never"
             }

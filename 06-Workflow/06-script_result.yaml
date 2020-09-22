@@ -1,12 +1,12 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Workflow
 metadata:
-  generateName: 06-scripts-bash-
+  generateName: 06-scripts-
 spec:
-  entrypoint: bash-script-example
+  entrypoint: script-example
 
   templates:
-  - name: bash-script-example
+  - name: script-example
     steps:
     - - name: generate
         template: gen-random-int-python

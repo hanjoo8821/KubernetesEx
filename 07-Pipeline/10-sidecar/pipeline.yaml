@@ -2,9 +2,9 @@ apiVersion: argoproj.io/v1alpha1
 kind: Workflow
 metadata:
   generateName: kfp-10-pipeline-with-sidecar-
-  annotations: {pipelines.kubeflow.org/kfp_sdk_version: 1.0.0, pipelines.kubeflow.org/pipeline_compilation_time: '2020-09-18T17:06:13.118593',
+  annotations: {pipelines.kubeflow.org/kfp_sdk_version: 1.0.0, pipelines.kubeflow.org/pipeline_compilation_time: '2020-09-22T15:21:55.478486',
     pipelines.kubeflow.org/pipeline_spec: '{"description": "Add a sidecar to an operation.",
-      "inputs": [{"default": "30", "name": "sleep_sec", "optional": true, "type":
+      "inputs": [{"default": "10", "name": "sleep_sec", "optional": true, "type":
       "Integer"}], "name": "kfp-10-pipeline_with_sidecar"}'}
   labels: {pipelines.kubeflow.org/kfp_sdk_version: 1.0.0}
 spec:
@@ -55,5 +55,5 @@ spec:
           - {name: download-downloaded, value: '{{tasks.download.outputs.parameters.download-downloaded}}'}
   arguments:
     parameters:
-    - {name: sleep_sec, value: '30'}
+    - {name: sleep_sec, value: '10'}
   serviceAccountName: pipeline-runner

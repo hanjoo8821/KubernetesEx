@@ -8,7 +8,7 @@
 2. Dockerfile
 
 3. 도커 컨테이너 이미지 빌드
-* $ docker build -t hanjoo8821/mnist:artifact
+* $ docker build -t hanjoo8821/mnist:artifact .
 
 4. 도커 허브에 push
 * $ docker push hanjoo8821/mnist:artifact

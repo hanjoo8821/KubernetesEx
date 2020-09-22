@@ -6,7 +6,7 @@ def flip_coin_op():
         name = 'Flip coin',
         image = 'python:alpine3.6',
         command = ['sh', '-c'],
-        arguments = ['python -c "import random; result = \'heads\' if random.randint(0,1) == 0 else \'tails\'; print(result)" | tee /tmp/output'],
+        arguments = ['python -c "import random; result = \'heads\' if random.randint(0,1) == 0 else \'tails\'; print(result)" | tee /tmp/output'],    # Artifact
         file_outputs = {'output': '/tmp/output'}
     )
 

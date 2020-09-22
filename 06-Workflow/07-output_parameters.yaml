@@ -15,18 +15,18 @@ spec:
         arguments:
           parameters:
           - name: message
-            value: "{{steps.generate-parameter.outputs.parameters.hello-param}}"
+            value: "{{steps.generate-parameter.outputs.parameters.param}}"
 
   - name: ws
     container:
       image: docker/whalesay:latest
       command: [sh, -c]
-      args: ["echo -n hell!! Tmax!!! > /tmp/hellmax.txt"] 
+      args: ["echo -n Hell!! POSTECH!!! > /tmp/hellpos.txt"] 
     outputs:
       parameters:
-      - name: hello-param
+      - name: param
         valueFrom:
-          path: /tmp/hellmax.txt
+          path: /tmp/hellpos.txt
 
   - name: print-message
     inputs:

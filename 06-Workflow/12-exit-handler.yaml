@@ -9,11 +9,12 @@ spec:
   onExit: exit-handler
 
   templates:
-  - name: intentional-fail  # 의도적으로 fail 시킴
+  - name: intentional-fail
     container:
       image: alpine:latest
       command: [sh, -c]
-      args: ["echo intentional failure; exit 1"]
+      args: ["echo intentional failure; exit 0"]
+      # args: ["echo intentional failure; exit 1"] # 의도적으로 fail 시킴
 
   - name: exit-handler      # Java 예외처리에서 finally 개념 (Step으로 연결시키지 않아도 무조건 실행됨)
     steps:
