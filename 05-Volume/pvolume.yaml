@@ -1,0 +1,47 @@
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: pv-han
+spec:
+  storageClassName: han-disk
+  capacity:
+    storage: 1Gi
+  volumeMode: Filesystem
+  persistentVolumeReclaimPolicy: Retain # Delete, Recycle
+  accessModes:
+    - ReadWriteMany
+  hostPath:
+    path: /home/hanjoo/KubernetesEx/05-Volume/PV
+
+# ---
+# apiVersion: v1
+# kind : PersistentVolumeClaim
+# metadata:
+#   name: pvc-han
+# spec:
+#   storageClassName: han-disk
+#   volumeMode: Filesystem
+#   accessModes:
+#     - ReadWriteMany
+#   resources:
+#     requests:
+#       storage: 1Gi
+
+# ---
+# apiVersion: v1
+# kind: Pod
+# metadata:
+#   name: pv-test-pod
+# spec:
+#   containers:
+#   - name: pv-test-con
+#     image: docker/whalesay:latest
+#     command: [sh, -c]
+#     args: ["echo Generate message -> Save at the volume; cowsay Test message : My name is J. H. Han. | tee /data/my_name.txt"]
+#     volumeMounts:
+#     - name: v-han
+#       mountPath: /data
+#   volumes:
+#   - name : v-han
+#     persistentVolumeClaim:
+#       claimName: pvc-han
